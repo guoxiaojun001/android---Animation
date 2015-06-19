@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">pmdemo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="xx">#262b31</color>
+    <color name="_FCB503">#404F64</color>
+    <color name="_F09D01">#9FA9B3</color>
+</resources>
