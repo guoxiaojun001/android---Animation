@@ -119,7 +119,7 @@ public class Pm extends View {
 		rectF.set(0, 0, width, height); // 设置圆的相切的矩形（width,height）屏幕左上为（0，0）
 		paint_black.setAntiAlias(true); // 设置图像为最佳，无锯齿
 		paint_black.setStyle(Style.STROKE); // 设置画笔为空心 即画出的图像不是填充的
-		paint_black.setStrokeWidth(2); // 设置画笔的宽带
+		paint_black.setStrokeWidth(2); // 设置画笔的宽度
 		paint_black.setColor(color_black); // 设置画笔的颜色
 
 		// 画圆弧，参数1.坐标，2.起点度数，x轴正方向为0度，3.旋转的度数，4.是否画出圆心，与圆心相连接，5.画笔的参数
@@ -135,7 +135,7 @@ public class Pm extends View {
 		paint_white.setAntiAlias(true);
 		paint_white.setStrokeWidth(30);
 		paint_white.setStyle(Style.STROKE);
-		canvas.drawArc(rectF, -225, 270, false, paint_white);
+		canvas.drawArc(rectF, -225,degree-1, false, paint_white);
 
 		// 指针白线
 		paint_white.setStrokeWidth(3);
