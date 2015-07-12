@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+/**
+ * @author anumbrella
+ * Created on 2015-7-12 下午8:38:38
+ */
 public class ImageCycleView extends LinearLayout {
 
 	/**
