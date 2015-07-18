@@ -25,13 +25,19 @@ public final class R {
         public static final int banner_dian_blur=0x7f020000;
         public static final int banner_dian_focus=0x7f020001;
         public static final int ic_launcher=0x7f020002;
+        public static final int image1=0x7f020003;
+        public static final int image2=0x7f020004;
+        public static final int image3=0x7f020005;
+        public static final int image4=0x7f020006;
+        public static final int image5=0x7f020007;
+        public static final int image6=0x7f020008;
     }
     public static final class id {
         public static final int action_settings=0x7f080004;
-        public static final int ad_layout=0x7f080000;
-        public static final int ad_pager=0x7f080001;
-        public static final int viewGroup=0x7f080002;
-        public static final int viewGroup2=0x7f080003;
+        public static final int ad_layout=0x7f080001;
+        public static final int ad_pager=0x7f080002;
+        public static final int ad_view=0x7f080000;
+        public static final int viewGroup=0x7f080003;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
