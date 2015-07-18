@@ -2,6 +2,7 @@ package com.example.carousel;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -392,7 +393,7 @@ public class ImageCycleView extends LinearLayout {
 		 ***/
 		@Override
 		public Object instantiateItem(ViewGroup container, final int position) {
-			//这个position与下面的不一致0
+
 			Log.i("test", "position" + position);
 			String imageUrl = mAdList.get(position % mAdList.size());
 			Integer imageResouce = mAdResourceList.get(position
@@ -405,28 +406,28 @@ public class ImageCycleView extends LinearLayout {
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 				imageView.setScaleType(ImageView.ScaleType.FIT_START);
 
-				// 设置图片点击监控事件
-				imageView.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						if (isFromUrl) {
-							// 不知道为啥这里的position与上面的不一致,目前还没解决这个问题
-							Log.i("test", "position2" + position);
-							mImageCycleViewListener.onImageClick(position, v);
-
-						} else {
-
-							mImageCycleViewListener.onImageClick(position, v);
-						}
-
-					}
-				});
-
 			} else {
 				imageView = mImageViewCacheList.remove(0);
 			}
+
+			// 设置图片点击监控事件
+			imageView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if (isFromUrl) {
+						Log.i("test", "position2" + position);
+						mImageCycleViewListener.onImageClick(position, v);
+
+					} else {
+
+						mImageCycleViewListener.onImageClick(position, v);
+					}
+
+				}
+			});
+
 			if (isFromUrl) {
 				// 从url上面加载图片的资源
 				imageView.setTag(imageUrl);
