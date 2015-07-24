@@ -22,12 +22,25 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int bg_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int bg_button_green=0x7f020000;
+        public static final int bg_button_red=0x7f020001;
+        public static final int bg_edittext=0x7f020002;
+        public static final int bg_search=0x7f020003;
+        public static final int ic_back_arrow=0x7f020004;
+        public static final int ic_button_search=0x7f020005;
+        public static final int ic_button_star=0x7f020006;
+        public static final int ic_edittext_delete=0x7f020007;
+        public static final int ic_edittext_search=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f080001;
+        public static final int action_settings=0x7f080006;
+        public static final int app_button=0x7f080003;
+        public static final int back_arrow=0x7f080005;
+        public static final int keywordsflow=0x7f080004;
+        public static final int search_button=0x7f080002;
         public static final int search_layout=0x7f080000;
+        public static final int search_view=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

@@ -8,7 +8,79 @@
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="25dip"
+        android:layout_marginTop="30dip"
         android:orientation="vertical" >
+
+        <com.example.search.DeletableEditText
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_edittext"
+            android:drawableLeft="@drawable/ic_edittext_search"
+            android:drawablePadding="6dip"
+            android:drawableRight="@drawable/ic_edittext_delete"
+            android:hint="请输入您要搜索的影片...."
+            android:paddingBottom="7dip"
+            android:paddingLeft="9dip"
+            android:paddingRight="9dip"
+            android:paddingTop="7dip"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="match_parent"
+                android:layout_height="33dip"
+                android:background="@drawable/bg_button_green"
+                android:drawableLeft="@drawable/ic_button_search"
+                android:drawablePadding="5dip"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:text="云搜索"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/app_button"
+                android:layout_width="match_parent"
+                android:layout_height="33dip"
+                android:layout_marginLeft="15dip"
+                android:background="@drawable/bg_button_red"
+                android:drawableLeft="@drawable/ic_button_search"
+                android:drawablePadding="5dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:text="精品应用"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
+
+    <com.example.search.KeywordsFlow
+        android:id="@+id/keywordsflow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_layout" />
+
+    <ImageView
+        android:id="@+id/back_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dip"
+        android:src="@drawable/ic_back_arrow" />
 
 </RelativeLayout>
