@@ -54,7 +54,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	/**
 	 * 显示TextView的最大的个数
 	 */
-	private static final int MAX = 10;
+	public static final int MAX = 10;
 
 	/**
 	 * 定义位移动画的类型：由外围移动到坐标点(TextView的具体位置)
@@ -79,8 +79,8 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	/**
 	 * 设置字体大小的最大最小值
 	 */
-	private static final int TEXT_SIZE_MAX = 25;
-	private static final int TEXT_SIZE_MIN = 14;
+	private static final int TEXT_SIZE_MAX = 20;
+	private static final int TEXT_SIZE_MIN = 15;
 
 	/**
 	 * 视图动画插值器
@@ -122,13 +122,13 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	/**
 	 * 由外到内的动画
 	 */
-	private static final int ANIMATION_IN = 1;
+	public static final int ANIMATION_IN = 1;
 
 	/**
 	 * 由内到外的动画
 	 */
 
-	private static final int ANIMATION_OUT = 2;
+	public static final int ANIMATION_OUT = 2;
 
 	/**
 	 * 设置每个TextView的点击事件监控
@@ -275,7 +275,12 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 		// TODO Auto-generated method stub
 		// 开始时height和width都为零,vecKeywords.size()为10,enableShow为true
 		// (当从onGlobalLayout()启动该方法时)width和height为手机屏幕宽度和高度
-		if (width > 0 && height > 0 && enableShow && vecKeywords.size() > 0) {
+
+		Log.i("test", "height " + height + "  width " + width
+				+ " vecKeywords.size() " + vecKeywords.size() + " enableShow "
+				+ enableShow);
+		if (width > 0 && height > 0 && enableShow && vecKeywords.size() > 0
+				&& vecKeywords != null) {
 			enableShow = false;
 			// 更改动画最后显示的时间
 			lastStartAnimationTime = System.currentTimeMillis();
@@ -299,7 +304,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				listX.add(xItem * i); // 存储每个textView在x轴上的距离
 				listY.add(yItem * i + (yItem >> 2)); // 存储每个TextView在y轴上的距离,最大的距离超过了手机屏幕,后面会处理
 			}
-
+			// Log.i("test", " xCenter " + xCenter + " yCenter " + yCenter);
 			// 在y轴中心上面的一些TextView
 			LinkedList<TextView> listTxtTop = new LinkedList<TextView>();
 			// 在y轴中心下面的一些TextView
@@ -356,7 +361,6 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				} else if (xy[IDX_X] == 0) {
 					xy[IDX_X] = Math.max(random.nextInt(xItem), xItem / 3);
 				}
-
 				// 距离y轴中心的距离
 				xy[IDX_DIS_Y] = Math.abs(xy[IDX_Y] - yCenter);
 				// 通过setTog(),传递数据，在attachToScreen()中获取到数据
@@ -403,9 +407,9 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 			int yDistance = iXY[IDX_Y] - yCenter;
 
 			int yMove = Math.abs(yDistance);
-
 			// 内嵌入一个for(),用于检测两个textView是否发生重叠交叉
-			inner: for (int k = 0; k < i - 1; i++) {
+			inner: for (int k = i - 1; k >= 0; k--) {
+
 				int[] kXY = (int[]) listTxt.get(k).getTag();
 				// TextView开始的x坐标的值
 				int startX = kXY[IDX_X];
@@ -421,15 +425,16 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 						int tmpMove = Math.abs(iXY[IDX_X] - kXY[IDX_Y]);
 						if (tmpMove > yItem) {
 							yMove = tmpMove;
-						} else if (tmpMove > 0) {
-							yMove = 0;
-						} else if (tmpMove == 0) {
-							yMove = yItem + 1;
+						}else if (tmpMove <= yItem || tmpMove == 0) {							
+							Log.i("test", "55555");
+							yMove = yItem + Math.max(yItem, yMove >> 1)
+									+ random.nextInt(yMove);
 						}
 						break inner;
 
 					}
 				}
+
 			}
 
 			if (yMove > yItem) {
@@ -441,9 +446,9 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				iXY[IDX_Y] = iXY[IDX_Y] - realMove;
 				iXY[IDX_DIS_Y] = Math.abs(iXY[IDX_Y] - yCenter);
 
-				// 对已经调整过的前i个y轴距离的TextView再次进行排序
-				sortXYList(listTxt, i + 1);
 			}
+			// 对已经调整过的前i个y轴距离的TextView再次进行排序
+			sortXYList(listTxt, i + 1);
 			// 对布局进行一些设置
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 					FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -518,13 +523,14 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	private boolean isXMixed(int startA, int endA, int startB, int endB) {
 		// TODO Auto-generated method stub
 		boolean result = false;
-		if (startA > startB && startA < endB) {
+
+		if (startA >= startB && startA <= endB) {
 			result = true;
-		} else if (endA > startB && endA < endB) {
+		} else if (endA >= startB && endA <= endB) {
 			result = true;
-		} else if (startB > startA && startB < endA) {
+		} else if (startB >= startA && startB <= endA) {
 			result = true;
-		} else if (endB > startB && endB < endA) {
+		} else if (endB >= startB && endB <= endA) {
 			result = true;
 		}
 
@@ -570,8 +576,9 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 		// 获取所有的textView的组件
 		// 开始时size会为零,布局当中还没有组件
 		int size = getChildCount();
+		Log.i("test", "size " + size);
 
-		for (int i = 0; i < size; i++) {
+		for (int i = size - 1; i >= 0; i--) {
 			final TextView txt = (TextView) getChildAt(i);
 			// 如果视图不可见就删除掉
 			if (txt.getVisibility() == TextView.GONE) {
@@ -630,7 +637,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 		// 获得布局的高和宽(当前对象组件为frameLayout)
 		int tmpWidth = getWidth();
 		int tmpHeight = getHeight();
-		if (tmpHeight != height && tmpWidth != width) {
+		if (tmpHeight != height || tmpWidth != width) {
 			this.height = tmpHeight;
 			this.width = tmpWidth;
 		}
@@ -639,7 +646,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 	}
 
-	public void setOnClickListener(OnClickListener listener) {
+	public void setOnItemClickListener(OnClickListener listener) {
 		this.itemClickListener = listener;
 	}
 

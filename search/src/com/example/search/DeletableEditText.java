@@ -93,6 +93,7 @@ public class DeletableEditText extends EditText {
 			if ((event.getX() > (getWidth() - getTotalPaddingRight()))
 					&& (event.getX() < (getWidth() - getPaddingRight()))) {
 				setText(" ");
+				setCleanDrawableVisible(false);
 
 			}
 
