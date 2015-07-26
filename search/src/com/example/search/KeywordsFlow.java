@@ -347,7 +347,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				textView.setGravity(Gravity.CENTER);
 
 				Paint paint = textView.getPaint();
-				// 返回小于等于TextView字符串长度的值
+				// 返回大于等于TextView字符串长度的值
 				int strWidth = (int) Math.ceil(paint.measureText(keyword));
 
 				// 将字符串的长度保存到数组当中去
