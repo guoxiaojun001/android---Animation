@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int STATE = 1;
 
 	private static String[] keywords = new String[] { "Anumbrella", "shuyun",
-			"打伞的她", "By anumbrella", "完美搭档", "致青春", "非常完美", "一生一世", "穿越火线",
+			"打伞的她", "By anumbrella", "android", "荣昌", "中国", "Linux", "穿越火线",
 			"天龙八部", "匹诺曹", "让子弹飞", "穿越火线", "情定三生", "心术", "马向阳下乡记", "人在囧途",
 			" 高达", " 刀剑神域", "泡芙小姐", "尖刀出鞘", "甄嬛传", "兵出潼关", "电锯惊魂3D", "古剑奇谭",
 			"同桌的你" };
@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case START:
 				keywordsFlow.rubKeywords();
 				feedKeywordsFlow(keywords, keywordsFlow);
-				keywordsFlow.startShow(KeywordsFlow.ANIMATION_OUT, 1);
+				keywordsFlow.startShow(KeywordsFlow.ANIMATION_OUT);
 				sendEmptyMessageDelayed(START, 4000);
 				break;
 
@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		back_arrow.setAnimation(shakeAnimation);
 		searchEditText = (DeletableEditText) findViewById(R.id.search_view);
 		feedKeywordsFlow(keywords, keywordsFlow);
-		keywordsFlow.startShow(KeywordsFlow.ANIMATION_IN, 1);
+		keywordsFlow.startShow(KeywordsFlow.ANIMATION_IN);
 		handler.sendEmptyMessageDelayed(START, 4000);
 
 	}

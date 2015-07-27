@@ -138,7 +138,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	/**
 	 * 定义文字TextView的动画是向内或者是向外
 	 */
-	private int txtTypeAnimation;
+	private int txtAnimInType, txtAnimOutType;
 
 	/**
 	 * 存储用来显示的关键字 (与ArrayList相比具有同步的特性)
@@ -192,15 +192,15 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 		// 使用android资源中的加载动画
 		// 减速进入
-		this.interpolator = AnimationUtils.loadInterpolator(getContext(),
+		interpolator = AnimationUtils.loadInterpolator(getContext(),
 				android.R.anim.decelerate_interpolator);
 
-		this.animAlphaToPaque = new AlphaAnimation(0.0f, 1.0f);
-		this.animAlphaToTransparent = new AlphaAnimation(1.0f, 0.0f);
-		this.animScaleLargeToNormal = new ScaleAnimation(2, 1, 2, 1);
-		this.animScaleNormalToLarge = new ScaleAnimation(1, 2, 1, 2);
-		this.animScaleNormalToZero = new ScaleAnimation(1, 0, 1, 0);
-		this.animScaleZeroToNormal = new ScaleAnimation(0, 1, 0, 1);
+		animAlphaToPaque = new AlphaAnimation(0.0f, 1.0f);
+		animAlphaToTransparent = new AlphaAnimation(1.0f, 0.0f);
+		animScaleLargeToNormal = new ScaleAnimation(2, 1, 2, 1);
+		animScaleNormalToLarge = new ScaleAnimation(1, 2, 1, 2);
+		animScaleNormalToZero = new ScaleAnimation(1, 0, 1, 0);
+		animScaleZeroToNormal = new ScaleAnimation(0, 1, 0, 1);
 
 	}
 
@@ -231,24 +231,16 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	 *         该类从MainActivity类中启动，为该类的启动入口
 	 */
 
-	public boolean startShow(int animationType, int type) {
+	public boolean startShow(int animationType) {
 		// 如果时间差大于动画持续的时间就执行动画
 		if (System.currentTimeMillis() - lastStartAnimationTime > animDuration) {
 			enableShow = true;
 			if (animationType == ANIMATION_IN) {
-				if (type == 1) {
-					txtTypeAnimation = OUTSIDE_TO_LOCATION;
-				} else if (type == 2) {
-					txtTypeAnimation = LOCATION_TO_CENTER;
-				}
-
+				txtAnimInType = OUTSIDE_TO_LOCATION;
+				txtAnimOutType = LOCATION_TO_CENTER;
 			} else if (animationType == ANIMATION_OUT) {
-
-				if (type == 1) {
-					txtTypeAnimation = LOCATION_TO_OUTSIDE;
-				} else if (type == 2) {
-					txtTypeAnimation = CENTER_TO_LOCATION;
-				}
+				txtAnimInType = CENTER_TO_LOCATION;
+				txtAnimOutType = LOCATION_TO_OUTSIDE;
 			}
 
 			/**
@@ -256,7 +248,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 			 **/
 			disapper();
 			boolean result = showTextView();
-			Log.i("test", "result" + result);
+			// Log.i("test", "result" + result);
 			return result;
 
 		}
@@ -276,9 +268,9 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 		// 开始时height和width都为零,vecKeywords.size()为10,enableShow为true
 		// (当从onGlobalLayout()启动该方法时)width和height为手机屏幕宽度和高度
 
-		Log.i("test", "height " + height + "  width " + width
-				+ " vecKeywords.size() " + vecKeywords.size() + " enableShow "
-				+ enableShow);
+		// Log.i("test", "height " + height + "  width " + width
+		// + " vecKeywords.size() " + vecKeywords.size() + " enableShow "
+		// + enableShow);
 		if (width > 0 && height > 0 && enableShow && vecKeywords.size() > 0
 				&& vecKeywords != null) {
 			enableShow = false;
@@ -308,7 +300,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 			// 在y轴中心上面的一些TextView
 			LinkedList<TextView> listTxtTop = new LinkedList<TextView>();
 			// 在y轴中心下面的一些TextView
-			LinkedList<TextView> listTxtBootom = new LinkedList<TextView>();
+			LinkedList<TextView> listTxtBottom = new LinkedList<TextView>();
 
 			// 对每个TextView的位置、属性和动画进行设置
 			for (int i = 0; i < size; i++) {
@@ -347,7 +339,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				textView.setGravity(Gravity.CENTER);
 
 				Paint paint = textView.getPaint();
-				// 返回小于等于TextView字符串长度的值
+				// 返回大于等于TextView字符串长度的值
 				int strWidth = (int) Math.ceil(paint.measureText(keyword));
 
 				// 将字符串的长度保存到数组当中去
@@ -367,15 +359,16 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 				// 每一个textView中都含有一个四个元素的数组，分别存储着位置信息
 				textView.setTag(xy);
 				if (xy[IDX_Y] > yCenter) {
-					listTxtTop.add(textView);
+					listTxtBottom.add(textView);
 				} else {
-					listTxtBootom.add(textView);
+					listTxtTop.add(textView);
 				}
 			}
 
 			// 修正TextView的y轴的坐标值
 			attachToScreen(listTxtTop, yCenter, xCenter, yItem);
-			attachToScreen(listTxtBootom, yCenter, xCenter, yItem);
+			attachToScreen(listTxtBottom, yCenter, xCenter, yItem);
+			return true;
 
 		}
 
@@ -422,13 +415,13 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 							+ iXY[IDX_TXT_LENGTH])) {
 
 						// 两个TextView相差的距离
-						int tmpMove = Math.abs(iXY[IDX_X] - kXY[IDX_Y]);
+						int tmpMove = Math.abs(iXY[IDX_Y] - kXY[IDX_Y]);
 						if (tmpMove > yItem) {
 							yMove = tmpMove;
-						}else if (tmpMove <= yItem || tmpMove == 0) {							
-							Log.i("test", "55555");
-							yMove = yItem + Math.max(yItem, yMove >> 1)
-									+ random.nextInt(yMove);
+						}else if(tmpMove < yItem || tmpMove ==0){
+							yMove = yItem + random.nextInt(yMove)+ random.nextInt(tmpMove>>2);
+							Log.i("test","yMove"+yMove);
+							Log.i("test","5555");
 						}
 						break inner;
 
@@ -445,10 +438,11 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 				iXY[IDX_Y] = iXY[IDX_Y] - realMove;
 				iXY[IDX_DIS_Y] = Math.abs(iXY[IDX_Y] - yCenter);
+				// 对已经调整过的前i个y轴距离的TextView再次进行排序
+				sortXYList(listTxt, i + 1);
 
 			}
-			// 对已经调整过的前i个y轴距离的TextView再次进行排序
-			sortXYList(listTxt, i + 1);
+
 			// 对布局进行一些设置
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 					FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -460,7 +454,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 			// 设置每个TextView的动画
 			AnimationSet animationSet = getAnimationSet(iXY, xCenter, yCenter,
-					txtTypeAnimation);
+					txtAnimInType);
 			textView.startAnimation(animationSet);
 
 		}
@@ -468,46 +462,42 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 	}
 
 	// 设置每个TextView的动画
-	private AnimationSet getAnimationSet(int[] iXY, int xCenter, int yCenter,
+	private AnimationSet getAnimationSet(int[] xy, int xCenter, int yCenter,
 			int Type) {
 		// TODO Auto-generated method stub
 		AnimationSet animationSet = new AnimationSet(true);
 		// 设置动画的插值器(设置动画为减速进入)
-		animationSet.setInterpolator(interpolator);
+		AnimationSet animSet = new AnimationSet(true);
+		animSet.setInterpolator(interpolator);
 		if (Type == OUTSIDE_TO_LOCATION) {
-			animationSet.addAnimation(animAlphaToPaque);
-			animationSet.addAnimation(animScaleLargeToNormal);
-			TranslateAnimation translate = new TranslateAnimation((iXY[IDX_X]
-					+ (iXY[IDX_TXT_LENGTH] >> 1) - xCenter) << 1, 0, iXY[IDX_Y]
-					- yCenter, 0);
-			animationSet.addAnimation(translate);
-
-		} else if (Type == CENTER_TO_LOCATION) {
-			animationSet.addAnimation(animAlphaToPaque);
-			animationSet.addAnimation(animScaleLargeToNormal);
-			TranslateAnimation translate = new TranslateAnimation(xCenter
-					- iXY[IDX_X], 0, yCenter - iXY[IDX_Y], 0);
-			animationSet.addAnimation(translate);
-
-		} else if (Type == LOCATION_TO_CENTER) {
-			animationSet.addAnimation(animAlphaToTransparent);
-			animationSet.addAnimation(animScaleNormalToZero);
-			TranslateAnimation translate = new TranslateAnimation(0, xCenter
-					- iXY[IDX_X], 0, yCenter - iXY[IDX_Y]);
-			animationSet.addAnimation(translate);
-
+			animSet.addAnimation(animAlphaToPaque);
+			animSet.addAnimation(animScaleLargeToNormal);
+			TranslateAnimation translate = new TranslateAnimation((xy[IDX_X]
+					+ (xy[IDX_TXT_LENGTH] >> 1) - xCenter) << 1, 0,
+					(xy[IDX_Y] - yCenter) << 1, 0);
+			animSet.addAnimation(translate);
 		} else if (Type == LOCATION_TO_OUTSIDE) {
-			animationSet.addAnimation(animAlphaToTransparent);
-			animationSet.addAnimation(animScaleNormalToLarge);
+			animSet.addAnimation(animAlphaToTransparent);
+			animSet.addAnimation(animScaleNormalToLarge);
+			TranslateAnimation translate = new TranslateAnimation(0, (xy[IDX_X]
+					+ (xy[IDX_TXT_LENGTH] >> 1) - xCenter) << 1, 0,
+					(xy[IDX_Y] - yCenter) << 1);
+			animSet.addAnimation(translate);
+		} else if (Type == LOCATION_TO_CENTER) {
+			animSet.addAnimation(animAlphaToTransparent);
+			animSet.addAnimation(animScaleNormalToZero);
 			TranslateAnimation translate = new TranslateAnimation(0,
-					(iXY[IDX_X] + (iXY[IDX_TXT_LENGTH] >> 1) - xCenter) << 1,
-					0, iXY[IDX_Y] - yCenter);
-			animationSet.addAnimation(translate);
-
+					(-xy[IDX_X] + xCenter), 0, (-xy[IDX_Y] + yCenter));
+			animSet.addAnimation(translate);
+		} else if (Type == CENTER_TO_LOCATION) {
+			animSet.addAnimation(animAlphaToPaque);
+			animSet.addAnimation(animScaleZeroToNormal);
+			TranslateAnimation translate = new TranslateAnimation(
+					(-xy[IDX_X] + xCenter), 0, (-xy[IDX_Y] + yCenter), 0);
+			animSet.addAnimation(translate);
 		}
-
-		animationSet.setDuration(animDuration);
-		return animationSet;
+		animSet.setDuration(animDuration);
+		return animSet;
 	}
 
 	/**
@@ -530,7 +520,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 			result = true;
 		} else if (startB >= startA && startB <= endA) {
 			result = true;
-		} else if (endB >= startB && endB <= endA) {
+		} else if (endB >= startA && endB <= endA) {
 			result = true;
 		}
 
@@ -576,7 +566,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 		// 获取所有的textView的组件
 		// 开始时size会为零,布局当中还没有组件
 		int size = getChildCount();
-		Log.i("test", "size " + size);
+		// Log.i("test", "size " + size);
 
 		for (int i = size - 1; i >= 0; i--) {
 			final TextView txt = (TextView) getChildAt(i);
@@ -593,7 +583,8 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 			// 活动动画的属性
 			AnimationSet animationSet = getAnimationSet(xy, width >> 1,
-					height >> 1, txtTypeAnimation);
+					height >> 1, txtAnimOutType);
+			txt.startAnimation(animationSet);
 			// 设置动画的监听类
 			animationSet.setAnimationListener(new AnimationListener() {
 
@@ -618,8 +609,6 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener 
 
 				}
 			});
-			txt.startAnimation(animationSet);
-
 		}
 
 	}

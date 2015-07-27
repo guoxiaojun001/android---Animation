@@ -5,8 +5,12 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 
 /**
@@ -92,9 +96,7 @@ public class DeletableEditText extends EditText {
 			// 模拟点击了清除图标按钮的事件
 			if ((event.getX() > (getWidth() - getTotalPaddingRight()))
 					&& (event.getX() < (getWidth() - getPaddingRight()))) {
-				setText(" ");
-				setCleanDrawableVisible(false);
-
+				setText("");
 			}
 
 			break;
@@ -106,6 +108,11 @@ public class DeletableEditText extends EditText {
 		return super.onTouchEvent(event);
 	}
 
+	@Override
+	public boolean performClick() {
+		return super.performClick();
+	}
+
 	/**
 	 * 焦点获取监听类
 	 * 
@@ -115,10 +122,11 @@ public class DeletableEditText extends EditText {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			// TODO Auto-generated method stub
-			boolean isHasFoucs = hasFocus;
-			if (isHasFoucs) {
+			isHasFocus = hasFocus;
+			if (isHasFocus) {
 				// 如果编辑框有输入文字,就显示删除的图片按钮
 				boolean isVisibleClean = getText().toString().length() >= 1;
+				Log.i("index", getText().toString().length() + "");
 				setCleanDrawableVisible(isVisibleClean);
 			} else {
 				setCleanDrawableVisible(false);
@@ -138,8 +146,9 @@ public class DeletableEditText extends EditText {
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
 			// 监听输入变化后的编辑框是否有内容
-			boolean isVisibleClean = getText().toString().length() >= 1;
-			setCleanDrawableVisible(isVisibleClean);
+			boolean isVisible = getText().toString().length() >= 1;
+			Log.i("index", isVisible + "isVisible");
+			setCleanDrawableVisible(isVisible);
 		}
 
 		@Override
@@ -180,5 +189,22 @@ public class DeletableEditText extends EditText {
 				getCompoundDrawables()[3]);
 
 	}
+	
+	
+    // 显示一个动画,以提示用户输入
+    public void setShakeAnimation() {
+        this.startAnimation(shakeAnimation(5));
+        
+    }
+ 
+    //CycleTimes动画重复的次数
+    public Animation shakeAnimation(int CycleTimes) {
+        Animation translateAnimation = new TranslateAnimation(0, 10, 0, 10);
+        translateAnimation.setInterpolator(new CycleInterpolator(CycleTimes));
+        translateAnimation.setDuration(1000);
+        return translateAnimation;
+    }
+	
+	
 
 }
