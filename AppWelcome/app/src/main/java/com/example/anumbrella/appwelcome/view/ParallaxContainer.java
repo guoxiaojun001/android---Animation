@@ -22,11 +22,9 @@ import java.util.List;
  */
 public class ParallaxContainer extends FrameLayout {
 
-    private String TAG = "ParallaxContainer";
 
     private ViewPager viewPager;
 
-    private Context mContext;
 
     public ViewPager.OnPageChangeListener mPagerChangeListener;
 
@@ -78,12 +76,11 @@ public class ParallaxContainer extends FrameLayout {
     /**
      * 设定动画持续的时间
      */
-    private final long DELAY_TIME = 600;
+    private final long DELAY_TIME = 900;
 
 
     public ParallaxContainer(Context context) {
         super(context);
-        mContext = context;
         adapter = new ParallaxPagerAdapter(context);
     }
 
@@ -214,9 +211,11 @@ public class ParallaxContainer extends FrameLayout {
                         continue;
                     }
 
-                    if ((pageIndex == tag.index - 1 || isLooping) && containerWidth > 0) {
+                    if ((pageIndex == tag.index - 1 || isLooping) && containerWidth != 0) {
 
                         view.setVisibility(VISIBLE);
+                        //设置屏幕视图沿着x轴旋转
+                        view.setRotationX((containerWidth - offsetPixels) * tag.xIn);
 
                         //设置屏幕右边进入(向右方滑动)(offsetPixels 变化为从大——>小)
                         view.setTranslationX((containerWidth - offsetPixels) * tag.xIn);
@@ -231,8 +230,10 @@ public class ParallaxContainer extends FrameLayout {
 
 
                         view.setVisibility(VISIBLE);
-                        //设置屏幕左边离开(向左方滑动)(offsetPixels 变化为小——>大)
+                        //设置屏幕视图沿着x轴旋转
                         view.setRotationX(0 - offsetPixels * tag.xOut);
+                        //设置屏幕左边离开(向左方滑动)(offsetPixels 变化为小——>大)
+                        view.setTranslationX(0 - offsetPixels * tag.xOut);
 
                         //设置从顶部离开
                         view.setTranslationY(0 - offsetPixels * tag.yOut);

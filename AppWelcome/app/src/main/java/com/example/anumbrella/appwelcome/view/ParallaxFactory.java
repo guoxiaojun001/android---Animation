@@ -133,8 +133,9 @@ public class ParallaxFactory implements LayoutInflater.Factory {
                 tag.yOut = array.getFloat(5, 0f);
                 view.setTag(R.id.parallax_view_tag, tag);
             }
+            array.recycle();
         }
-        array.recycle();
+
     }
 
 }

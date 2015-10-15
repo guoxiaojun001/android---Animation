@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:anumbrella="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_login_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="80dip"
+        anumbrella:x_in="1"
+        anumbrella:x_out="1">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/common_logo" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/rl_weibo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="25dip"
+        android:src="@drawable/login_btn_weibo"
+        anumbrella:x_in="1"
+        anumbrella:x_out="1" />
+
+    <LinearLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dip"
+        android:orientation="horizontal"
+        anumbrella:x_in="1"
+        anumbrella:x_out="1">
+
+        <ImageView
+            android:id="@+id/rl_weixin"
+            android:layout_width="0dip"
+            android:layout_height="30dip"
+            android:layout_weight="1"
+            android:src="@drawable/login_btn_weixin"
+            anumbrella:x_in="1"
+            anumbrella:x_out="1" />
+
+        <ImageView
+            android:id="@+id/rl_qq"
+            android:layout_width="0dip"
+            android:layout_height="30dip"
+            android:layout_marginLeft="10dip"
+            android:layout_weight="1"
+            android:src="@drawable/login_btn_qq"
+            anumbrella:x_in="1"
+            anumbrella:x_out="1" />
+
+        <ImageView
+            android:id="@+id/rl_browse"
+            android:layout_width="0dip"
+            android:layout_height="30dip"
+            android:layout_marginLeft="10dip"
+            android:layout_weight="1"
+            android:src="@drawable/login_btn_browse"
+            anumbrella:x_in="1"
+            anumbrella:x_out="1" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/phone_reg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/rl_bottom"
+        android:layout_below="@id/rl_bottom"
+        android:layout_marginLeft="30dip"
+        android:layout_marginTop="-65dip"
+        android:background="@drawable/ic_phone_bg"
+        android:text="@string/phone_reg"
+        android:textColor="@color/base_shallow_black"
+        android:textSize="16sp"
+        anumbrella:x_in="1"
+        anumbrella:x_out="1" />
+
+    <TextView
+        android:id="@+id/phone_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/rl_bottom"
+        android:layout_below="@id/rl_bottom"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="-65dp"
+        android:background="@drawable/ic_phone_bg"
+        android:text="@string/phone_login"
+        android:textColor="@color/base_shallow_black"
+        android:textSize="16sp"
+        anumbrella:x_in="1"
+        anumbrella:x_out="1" />
+
+
+</RelativeLayout>
